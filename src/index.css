@@ -53,7 +53,8 @@
   /* 5. Sizes */
   --tap-size: 44px; /* minimum tap target (WCAG 2.5.5 / Apple HIG) */
   --radius: 10px;
-  --content-width: 720px;
+  --content-width: 720px; /* customer pages */
+  --dashboard-width: 1200px; /* staff dashboard: room for 3 columns */
   --nav-height: 60px; /* used so headings aren't hidden under the sticky bar */
 
   font-family: var(--font-body);
@@ -653,4 +654,134 @@ a {
 
 .order-item + .order-item {
   border-top: 1px solid var(--divider);
+}
+
+/* =========================================================
+   Staff pages
+   ========================================================= */
+
+/* Hidden on screen, still read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.narrow-page {
+  max-width: 440px;
+}
+
+.dashboard {
+  max-width: var(--dashboard-width);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4) var(--space-7);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.dashboard-header .page-title {
+  margin: 0;
+}
+
+.dashboard-header p {
+  margin: var(--space-1) 0 0;
+}
+
+/* Stacked on mobile; three columns side by side on wider screens */
+.dashboard-columns {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .dashboard-columns {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+}
+
+.dashboard-column .section-title {
+  margin-top: var(--space-5);
+}
+
+.empty-column {
+  padding: var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.order-cards {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+}
+
+.order-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.order-card-number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.order-card-name {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.order-card-items {
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+  border-top: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
+}
+
+.order-card-items li {
+  padding: var(--space-1) 0;
+}
+
+.order-card-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.order-card-total strong {
+  color: var(--accent-text);
+}
+
+.order-card .message.error {
+  margin: 0;
 }
