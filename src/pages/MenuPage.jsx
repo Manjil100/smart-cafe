@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient'
 import { formatPrice } from '../lib/formatPrice'
 import { useCart } from '../context/cartContext'
 import CartBar from '../components/CartBar.jsx'
+import KitchenWait from '../components/KitchenWait.jsx'
 
 function MenuPage() {
   const { items: cartItems, addItem } = useCart()
@@ -63,6 +64,7 @@ function MenuPage() {
       <header className="site-header">
         <h1 className="site-name">Our menu</h1>
         <p className="site-tagline">Order here, we'll bring it out when it's ready</p>
+        <KitchenWait />
       </header>
 
       {/* Sticky row of links that jump to each category */}

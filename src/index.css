@@ -1029,3 +1029,44 @@ a {
   font-size: var(--text-lg);
   font-weight: 700;
 }
+
+/* =========================================================
+   Estimated wait times
+   ========================================================= */
+
+/* Small "Kitchen queue: about 8 min" line on the landing and menu pages */
+.kitchen-wait {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--divider);
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  color: var(--detail);
+}
+
+/* Small static dot (no pulsing animation) */
+.kitchen-wait-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--detail);
+}
+
+.hero .kitchen-wait {
+  margin-top: var(--space-5);
+}
+
+/* "Ready in about 6 min" on the tracking page */
+.order-estimate {
+  margin: calc(-1 * var(--space-3)) 0 var(--space-5);
+  text-align: center;
+  font-size: var(--text-xl);
+  font-family: var(--font-display);
+}
+
+.order-estimate strong {
+  color: var(--accent-text);
+}

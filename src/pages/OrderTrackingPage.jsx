@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatPrice } from '../lib/formatPrice'
+import { formatWait } from '../lib/formatWait'
 
 // The four steps an order moves through, in order.
 const STEPS = [
@@ -147,6 +148,12 @@ function OrderTrackingPage() {
   const statusMessage =
     currentIndex >= 0 ? STEPS[currentIndex].message : `Status: ${order.status}`
 
+  // Only show the estimate while the order is still being worked on,
+  // and only if the database sent a number.
+  const showEstimate =
+    (order.status === 'pending' || order.status === 'preparing') &&
+    typeof order.estimated_minutes === 'number'
+
   return (
     <main className="page">
       <header className="order-header">
@@ -162,6 +169,13 @@ function OrderTrackingPage() {
       <p className="order-status-message" aria-live="polite">
         {statusMessage}
       </p>
+
+      {/* Outside the live region, so it isn't re-announced on every refresh */}
+      {showEstimate && (
+        <p className="order-estimate">
+          Ready in <strong>{formatWait(order.estimated_minutes)}</strong>
+        </p>
+      )}
 
       <ol className="progress" aria-label="Order progress">
         {STEPS.map((step, index) => {

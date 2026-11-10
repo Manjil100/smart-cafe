@@ -5,6 +5,7 @@ import { formatPrice } from '../lib/formatPrice'
 import { useCart } from '../context/cartContext'
 import CartBar from '../components/CartBar.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
+import KitchenWait from '../components/KitchenWait.jsx'
 
 // Gallery images (converted to WebP, max 1200px wide, under 200 KB).
 // Importing them lets Vite add them to the build and fail if one is missing.
@@ -110,6 +111,7 @@ function LandingPage() {
             See today's picks
           </a>
         </div>
+        <KitchenWait />
       </section>
 
       {/* Our story */}
