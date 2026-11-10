@@ -56,10 +56,8 @@ function CartPage() {
     const order = Array.isArray(data) ? data[0] : data
 
     clearCart()
-    // Pass the order number along so the next page can show it straight away.
-    navigate(`/order/${order.order_id}`, {
-      state: { orderNumber: order.order_number, total: order.total },
-    })
+    // The tracking page loads the order itself, so the link alone is enough.
+    navigate(`/order/${order.order_id}`)
   }
 
   if (items.length === 0) {

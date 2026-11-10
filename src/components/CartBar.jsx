@@ -10,16 +10,11 @@ function CartBar() {
 
   if (totalQuantity === 0) return null
 
-  const itemLabel = totalQuantity === 1 ? 'item' : 'items'
-
+  // Reads as "View cart (2) $9.00"
   return (
     <Link to="/cart" className="cart-bar">
-      <span>
-        {totalQuantity} {itemLabel} · {formatPrice(totalPrice)}
-      </span>
-      <span>
-        View cart <span aria-hidden="true">→</span>
-      </span>
+      <span>View cart ({totalQuantity})</span>
+      <span>{formatPrice(totalPrice)}</span>
     </Link>
   )
 }

@@ -519,12 +519,138 @@ a {
 }
 
 /* =========================================================
-   Order confirmation
+   Order tracking
    ========================================================= */
+
+.small-text {
+  font-size: var(--text-sm);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  margin: var(--space-6) 0 var(--space-2);
+}
+
+.order-header {
+  text-align: center;
+}
+
+.order-header p {
+  margin: 0;
+}
 
 .order-number {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: var(--text-display);
-  margin: 0 0 var(--space-3);
+  line-height: 1;
+  margin: var(--space-1) 0 var(--space-2);
+}
+
+.order-status-message {
+  margin: var(--space-5) 0;
+  padding: var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+/* 4-step progress indicator: dots joined by a line */
+.progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progress-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+/* The line joining this dot to the one before it */
+.progress-step + .progress-step::before {
+  content: '';
+  position: absolute;
+  top: 17px; /* middle of the 36px dot */
+  right: 50%;
+  width: 100%;
+  height: 3px;
+  background: var(--divider);
+}
+
+.progress-step-done::before,
+.progress-step-current::before {
+  background: var(--text) !important;
+}
+
+.progress-dot {
+  position: relative; /* sits above the line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.progress-step-done .progress-dot,
+.progress-step-current .progress-dot {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
+}
+
+/* Extra ring so the current step stands out without using colour alone */
+.progress-step-current .progress-dot {
+  box-shadow:
+    0 0 0 3px var(--bg),
+    0 0 0 5px var(--text);
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.progress-step-done .progress-label {
+  color: var(--text);
+}
+
+.progress-step-current .progress-label {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Items in the order, same row style as the menu */
+.order-items {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+}
+
+.order-item + .order-item {
+  border-top: 1px solid var(--divider);
 }
