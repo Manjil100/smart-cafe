@@ -110,6 +110,191 @@ body {
   white-space: nowrap; /* keep "$4.50" on one line */
 }
 
+/* Price above the Add button, on the right of each item. */
+.menu-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Extra space at the bottom so the floating cart bar never covers an item. */
+.menu-page {
+  padding-bottom: 110px;
+}
+
+/* ---------- Shared ---------- */
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.center {
+  text-align: center;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.small {
+  font-size: 0.8rem;
+  word-break: break-all; /* long order IDs wrap on small screens */
+}
+
+a {
+  color: var(--accent);
+}
+
+.button {
+  display: inline-block;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--surface);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-large {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.05rem;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- Floating cart bar ---------- */
+
+.cart-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 688px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- Cart page ---------- */
+
+.cart-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+/* Name on top; quantity, line total and remove on the row below. */
+.cart-line {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-template-areas:
+    'info info info'
+    'qty total remove';
+  align-items: center;
+  gap: 8px 16px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.cart-line-info {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+}
+
+.quantity-controls {
+  grid-area: qty;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity-controls button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.cart-line-total {
+  grid-area: total;
+  font-weight: 600;
+}
+
+.cart-line .link-button {
+  grid-area: remove;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  margin: 20px 0;
+}
+
+.checkout-form {
+  display: grid;
+  gap: 10px;
+}
+
+.checkout-form label {
+  font-weight: 600;
+}
+
+.checkout-form input {
+  padding: 12px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---------- Order confirmation ---------- */
+
+.order-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0;
+}
+
 /* Loading / empty / error messages */
 .message {
   text-align: center;

@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-
-// Formats a number as New Zealand dollars, e.g. 4.5 -> "$4.50"
-const priceFormatter = new Intl.NumberFormat('en-NZ', {
-  style: 'currency',
-  currency: 'NZD',
-  minimumFractionDigits: 2,
-})
+import { formatPrice } from '../lib/formatPrice'
+import { useCart } from '../context/cartContext'
+import CartBar from '../components/CartBar.jsx'
 
 function MenuPage() {
+  const { items: cartItems, addItem } = useCart()
+
   const [categories, setCategories] = useState([])
   const [menuItems, setMenuItems] = useState([])
   const [status, setStatus] = useState('loading') // 'loading' | 'error' | 'ready'
@@ -83,17 +81,33 @@ function MenuPage() {
             <section key={category.id} className="menu-category">
               <h2>{category.name}</h2>
               <ul className="menu-list">
-                {itemsInCategory.map((item) => (
-                  <li key={item.id} className="menu-item">
-                    <div className="menu-item-text">
-                      <h3>{item.name}</h3>
-                      {item.description && <p>{item.description}</p>}
-                    </div>
-                    <span className="menu-item-price">
-                      {priceFormatter.format(item.price)}
-                    </span>
-                  </li>
-                ))}
+                {itemsInCategory.map((item) => {
+                  // How many of this item are already in the cart (0 if none).
+                  const inCart =
+                    cartItems.find((line) => line.id === item.id)?.quantity ?? 0
+
+                  return (
+                    <li key={item.id} className="menu-item">
+                      <div className="menu-item-text">
+                        <h3>{item.name}</h3>
+                        {item.description && <p>{item.description}</p>}
+                      </div>
+                      <div className="menu-item-actions">
+                        <span className="menu-item-price">
+                          {formatPrice(item.price)}
+                        </span>
+                        <button
+                          type="button"
+                          className="button"
+                          onClick={() => addItem(item)}
+                          aria-label={`Add ${item.name} to cart`}
+                        >
+                          {inCart > 0 ? `Add (${inCart})` : 'Add'}
+                        </button>
+                      </div>
+                    </li>
+                  )
+                })}
               </ul>
             </section>
           )
@@ -102,6 +116,8 @@ function MenuPage() {
       {status === 'ready' && menuItems.length === 0 && (
         <p className="message">No menu items are available right now.</p>
       )}
+
+      <CartBar />
     </main>
   )
 }
