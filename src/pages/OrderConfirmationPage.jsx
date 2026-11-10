@@ -13,7 +13,7 @@ function OrderConfirmationPage() {
 
   return (
     <main className="page center">
-      <h1>Thank you!</h1>
+      <h1 className="page-title">Thank you!</h1>
 
       {orderNumber ? (
         <>
@@ -31,7 +31,7 @@ function OrderConfirmationPage() {
       <p className="muted small">Order reference: {orderId}</p>
 
       <p>
-        <Link to="/" className="button">
+        <Link to="/" className="button button-secondary">
           Back to menu
         </Link>
       </p>

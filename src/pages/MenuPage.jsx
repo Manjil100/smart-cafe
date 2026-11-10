@@ -19,13 +19,10 @@ function MenuPage() {
     async function loadMenu() {
       // Run both queries at the same time.
       const [categoriesResult, itemsResult] = await Promise.all([
-        supabase
-          .from('categories')
-          .select('id, name')
-          .order('sort_order'),
+        supabase.from('categories').select('id, name').order('sort_order'),
         supabase
           .from('menu_items')
-          .select('id, category_id, name, description, price')
+          .select('id, category_id, name, description, price, prep_time_minutes')
           .eq('is_available', true)
           .order('name'),
       ])
@@ -51,47 +48,80 @@ function MenuPage() {
     }
   }, [])
 
+  // Pair each category with its items, and drop categories with nothing
+  // available. Both the category links and the menu use this list,
+  // so a link never points to a missing section.
+  const sections = categories
+    .map((category) => ({
+      ...category,
+      items: menuItems.filter((item) => item.category_id === category.id),
+    }))
+    .filter((section) => section.items.length > 0)
+
   return (
-    <main className="menu-page">
-      <header className="menu-header">
-        <h1>Smart Café</h1>
-        <p>Browse our menu</p>
+    <>
+      <header className="site-header">
+        <h1 className="site-name">Tidewater Café</h1>
+        <p className="site-tagline">Order here, we'll bring it out when it's ready</p>
       </header>
 
-      {status === 'loading' && <p className="message">Loading menu…</p>}
-
-      {status === 'error' && (
-        <p className="message error">
-          Sorry, we couldn't load the menu right now. Please refresh the page or
-          try again in a moment.
-        </p>
+      {/* Sticky row of links that jump to each category */}
+      {status === 'ready' && sections.length > 0 && (
+        <nav className="category-nav" aria-label="Menu categories">
+          <ul>
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a href={`#category-${section.id}`}>{section.name}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       )}
 
-      {status === 'ready' &&
-        categories.map((category) => {
-          // Pick out the items that belong to this category.
-          const itemsInCategory = menuItems.filter(
-            (item) => item.category_id === category.id
-          )
+      <main className="page menu-page">
+        {status === 'loading' && <p className="message">Loading menu…</p>}
 
-          // Don't show a heading for a category with nothing available.
-          if (itemsInCategory.length === 0) return null
+        {status === 'error' && (
+          <p className="message error" role="alert">
+            Sorry, we couldn't load the menu right now. Please refresh the page
+            or try again in a moment.
+          </p>
+        )}
 
-          return (
-            <section key={category.id} className="menu-category">
-              <h2>{category.name}</h2>
+        {status === 'ready' && sections.length === 0 && (
+          <p className="message">No menu items are available right now.</p>
+        )}
+
+        {status === 'ready' &&
+          sections.map((section) => (
+            <section
+              key={section.id}
+              id={`category-${section.id}`}
+              className="menu-category"
+              aria-labelledby={`category-heading-${section.id}`}
+            >
+              <h2 id={`category-heading-${section.id}`}>{section.name}</h2>
+
               <ul className="menu-list">
-                {itemsInCategory.map((item) => {
+                {section.items.map((item) => {
                   // How many of this item are already in the cart (0 if none).
                   const inCart =
                     cartItems.find((line) => line.id === item.id)?.quantity ?? 0
 
                   return (
                     <li key={item.id} className="menu-item">
-                      <div className="menu-item-text">
+                      <div>
                         <h3>{item.name}</h3>
-                        {item.description && <p>{item.description}</p>}
+                        {item.description && (
+                          <p className="menu-item-description">{item.description}</p>
+                        )}
+                        {item.prep_time_minutes != null && (
+                          <p className="prep-time">
+                            ≈ {item.prep_time_minutes} min
+                          </p>
+                        )}
                       </div>
+
                       <div className="menu-item-actions">
                         <span className="menu-item-price">
                           {formatPrice(item.price)}
@@ -110,15 +140,11 @@ function MenuPage() {
                 })}
               </ul>
             </section>
-          )
-        })}
+          ))}
 
-      {status === 'ready' && menuItems.length === 0 && (
-        <p className="message">No menu items are available right now.</p>
-      )}
-
-      <CartBar />
-    </main>
+        <CartBar />
+      </main>
+    </>
   )
 }
 

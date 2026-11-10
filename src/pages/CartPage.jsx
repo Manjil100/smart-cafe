@@ -65,10 +65,10 @@ function CartPage() {
   if (items.length === 0) {
     return (
       <main className="page">
-        <h1>Your cart</h1>
+        <h1 className="page-title">Your cart</h1>
         <p className="message">Your cart is empty.</p>
         <p className="center">
-          <Link to="/" className="button">
+          <Link to="/" className="button button-secondary">
             Browse the menu
           </Link>
         </p>
@@ -78,16 +78,16 @@ function CartPage() {
 
   return (
     <main className="page">
-      <p>
-        <Link to="/">← Back to menu</Link>
-      </p>
-      <h1>Your cart</h1>
+      <Link to="/" className="back-link">
+        <span aria-hidden="true">←</span>&nbsp;Back to menu
+      </Link>
+      <h1 className="page-title">Your cart</h1>
 
       <ul className="cart-list">
         {items.map((line) => (
           <li key={line.id} className="cart-line">
             <div className="cart-line-info">
-              <strong>{line.name}</strong>
+              <span className="cart-line-name">{line.name}</span>
               <span className="muted">{formatPrice(line.price)} each</span>
             </div>
 
@@ -100,7 +100,9 @@ function CartPage() {
               >
                 −
               </button>
-              <span aria-label="Quantity">{line.quantity}</span>
+              <span className="quantity-value" aria-label={`Quantity ${line.quantity}`}>
+                {line.quantity}
+              </span>
               <button
                 type="button"
                 onClick={() => changeQuantity(line.id, 1)}
@@ -133,8 +135,12 @@ function CartPage() {
 
       <form className="checkout-form" onSubmit={handleSubmit}>
         <label htmlFor="customer-name">Your name</label>
+        <p id="customer-name-hint" className="field-hint">
+          We'll use this to find you when your order is ready.
+        </p>
         <input
           id="customer-name"
+          aria-describedby="customer-name-hint"
           type="text"
           value={customerName}
           onChange={(event) => setCustomerName(event.target.value)}

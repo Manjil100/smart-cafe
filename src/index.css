@@ -1,33 +1,94 @@
-/* Colours are kept in variables so they are easy to change in one place. */
-:root {
-  --bg: #faf7f2;
-  --surface: #ffffff;
-  --text: #2b2420;
-  --text-muted: #6f655d;
-  --border: #e8e0d6;
-  --accent: #8a4b2a;
-  --error-bg: #fdecea;
-  --error-text: #a12a1d;
+/* =========================================================
+   Tidewater Café design system
+   Every page (menu, cart, tracking, staff) should use these
+   variables instead of hard-coded colours, fonts or sizes.
+   ========================================================= */
 
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+:root {
+  /* 1. Brand colours (raw values, from the brief) */
+  --brand-ink: #1b2e33; /* Harbour ink */
+  --brand-salt: #eef3f2; /* Sea-salt */
+  --brand-white: #ffffff;
+  --brand-red: #c4262e; /* Pōhutukawa red, the ONLY accent */
+  --brand-green: #4e6b3a; /* Flax green, small details */
+
+  /* 2. Roles: what each colour is used for.
+     Components use these, so dark mode only has to change this block.
+     All text pairs checked for WCAG AA (4.5:1 normal text). */
+  --bg: var(--brand-salt); /* page background */
+  --surface: var(--brand-white); /* panels, inputs */
+  --text: var(--brand-ink); /* 12.6:1 on bg, 14.1:1 on surface */
+  --text-muted: #4f6266; /* 5.7:1 on bg, 6.4:1 on surface */
+  --accent: var(--brand-red); /* Add buttons, cart bar fill */
+  --on-accent: var(--brand-white); /* text on red, 5.7:1 */
+  --accent-text: var(--brand-red); /* totals in red, 5.1:1 on bg */
+  --detail: var(--brand-green); /* prep time, 5.4:1 on bg */
+  --divider: #d3dedc; /* thin decorative lines */
+  --border-strong: #6b7f83; /* input/button outlines, 4.2:1 (needs 3:1) */
+  --nav-bg: var(--brand-ink); /* sticky category bar */
+  --nav-text: var(--brand-salt); /* 12.6:1 on nav */
+  --focus: var(--brand-ink); /* keyboard focus outline */
+  --error-bg: #fcebec;
+  --error-text: #a31f26; /* 6.6:1 on error-bg */
+
+  /* 3. Typography */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-display: clamp(2.5rem, 9vw, 3.75rem); /* café name: grows with screen */
+
+  /* 4. Spacing scale (multiples of 4px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* 5. Sizes */
+  --tap-size: 44px; /* minimum tap target (WCAG 2.5.5 / Apple HIG) */
+  --radius: 10px;
+  --content-width: 720px;
+  --nav-height: 60px; /* used so headings aren't hidden under the sticky bar */
+
+  font-family: var(--font-body);
+  font-size: var(--text-base);
   line-height: 1.5;
   color: var(--text);
   background: var(--bg);
+  color-scheme: light;
 }
 
-/* Dark mode, used automatically when the device is set to dark. */
+/* Dark mode: same roles, darker harbour-night colours. All pairs re-checked. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1c1917;
-    --surface: #262220;
-    --text: #f3eee9;
-    --text-muted: #b3a89f;
-    --border: #3a3431;
-    --accent: #e0a37a;
-    --error-bg: #3b1f1c;
-    --error-text: #f5b4aa;
+    --bg: #0f1e21;
+    --surface: var(--brand-ink);
+    --text: var(--brand-salt); /* 15.3:1 on bg */
+    --text-muted: #a9babc; /* 7.0:1 on surface */
+    --accent: var(--brand-red); /* white text on it is still 5.7:1 */
+    --on-accent: var(--brand-white);
+    --accent-text: #ff8f8f; /* lighter red for text, 6.5:1 on surface */
+    --detail: #a3c48a; /* lighter flax, 7.3:1 on surface */
+    --divider: #2c4248;
+    --border-strong: #7a8f93; /* 4.2:1 on surface */
+    --nav-bg: #0a1618;
+    --nav-text: var(--brand-salt);
+    --focus: var(--brand-salt);
+    --error-bg: #3a1a1d;
+    --error-text: #ffb3b3;
+    color-scheme: dark;
   }
 }
+
+/* =========================================================
+   Base
+   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -38,97 +99,39 @@ body {
   background: var(--bg);
 }
 
-/* ---------- Menu page ---------- */
-
-/* One centred column; on phones it simply fills the screen with padding. */
-.menu-page {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
+h1,
+h2,
+h3 {
+  line-height: 1.15;
 }
 
-.menu-header {
-  text-align: center;
-  margin-bottom: 24px;
+a {
+  color: inherit;
 }
 
-.menu-header h1 {
-  margin: 0;
-  font-size: 2rem;
-  color: var(--accent);
+/* Smooth jump to categories, but only for people who haven't asked
+   their device to reduce motion. There are no other animations. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-.menu-header p {
-  margin: 4px 0 0;
-  color: var(--text-muted);
+/* Clear keyboard focus outline on everything interactive.
+   :focus-visible shows it for keyboard users, not on every mouse click. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
-.menu-category {
-  margin-top: 32px;
-}
-
-.menu-category h2 {
-  font-size: 1.25rem;
-  margin: 0 0 12px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid var(--accent);
-}
-
-.menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 12px;
-}
-
-/* Each item: text on the left, price on the right. */
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 14px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-
-.menu-item h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.menu-item p {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
-
-.menu-item-price {
-  font-weight: 600;
-  white-space: nowrap; /* keep "$4.50" on one line */
-}
-
-/* Price above the Add button, on the right of each item. */
-.menu-item-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-}
-
-/* Extra space at the bottom so the floating cart bar never covers an item. */
-.menu-page {
-  padding-bottom: 110px;
-}
-
-/* ---------- Shared ---------- */
+/* =========================================================
+   Shared components
+   ========================================================= */
 
 .page {
-  max-width: 720px;
+  max-width: var(--content-width);
   margin: 0 auto;
-  padding: 24px 16px 48px;
+  padding: var(--space-5) var(--space-4) var(--space-7);
 }
 
 .center {
@@ -140,25 +143,40 @@ body {
 }
 
 .small {
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
   word-break: break-all; /* long order IDs wrap on small screens */
 }
 
-a {
-  color: var(--accent);
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  margin: var(--space-2) 0 var(--space-5);
 }
 
+/* Primary button: red, used for Add / Place order */
 .button {
-  display: inline-block;
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-size);
+  min-width: var(--tap-size);
+  padding: 0 var(--space-4);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: var(--accent);
-  color: var(--surface);
+  color: var(--on-accent);
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Secondary button: outlined in ink, keeps red for the main actions */
+.button-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 2px solid var(--text);
 }
 
 .button:disabled {
@@ -168,93 +186,288 @@ a {
 
 .button-large {
   width: 100%;
-  padding: 14px;
-  font-size: 1.05rem;
+  min-height: 52px;
+  font-size: var(--text-lg);
 }
 
+/* Text-style button (e.g. "Remove"), still a full 44px tap target */
 .link-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-size);
+  padding: 0 var(--space-2);
   background: none;
   border: none;
-  padding: 0;
-  color: var(--accent);
+  color: var(--text-muted);
   font: inherit;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   text-decoration: underline;
   cursor: pointer;
 }
 
-/* ---------- Floating cart bar ---------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-size);
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Loading / empty / error messages */
+.message {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-5) 0;
+}
+
+.message.error {
+  background: var(--error-bg);
+  color: var(--error-text);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+}
+
+/* =========================================================
+   Menu page
+   ========================================================= */
+
+.site-header {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-5);
+}
+
+.site-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-display);
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--text);
+}
+
+.site-tagline {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+}
+
+/* Sticky category bar. Scrolls sideways on phones. */
+.category-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--nav-bg);
+}
+
+.category-nav ul {
+  display: flex;
+  gap: var(--space-2);
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+  list-style: none;
+  overflow-x: auto; /* swipe sideways if the links don't fit */
+  scrollbar-width: none; /* hide the scrollbar; swiping still works */
+}
+
+.category-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-size);
+  padding: 0 var(--space-3);
+  white-space: nowrap;
+  color: var(--nav-text);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius);
+}
+
+.category-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Light outline on the dark bar so focus is still visible */
+.category-nav a:focus-visible {
+  outline-color: var(--nav-text);
+  outline-offset: -3px;
+}
+
+.menu-page {
+  /* extra bottom space so the floating cart bar never covers an item */
+  padding-bottom: 120px;
+}
+
+.menu-category {
+  margin-top: var(--space-6);
+  /* when jumping here, stop below the sticky bar */
+  scroll-margin-top: calc(var(--nav-height) + var(--space-3));
+}
+
+.menu-category h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  margin: 0 0 var(--space-2);
+}
+
+/* Menu rows on one white panel, separated by thin dividers */
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+}
+
+.menu-item + .menu-item {
+  border-top: 1px solid var(--divider);
+}
+
+.menu-item h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.menu-item-description {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+}
+
+.prep-time {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--detail);
+}
+
+/* Price above the Add button, on the right */
+.menu-item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.menu-item-price {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Floating cart bar
+   ========================================================= */
 
 .cart-bar {
   position: fixed;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  width: calc(100% - 32px);
-  max-width: 688px;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: var(--space-4);
+  max-width: calc(var(--content-width) - 2 * var(--space-4));
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-3) var(--space-5);
+  background: var(--accent);
+  color: var(--on-accent);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(15, 30, 33, 0.3);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  text-decoration: none;
 }
 
-/* ---------- Cart page ---------- */
+/* The bar is red, so use a contrasting outline for focus */
+.cart-bar:focus-visible {
+  outline-color: var(--text);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   Cart page
+   ========================================================= */
 
 .cart-list {
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 12px;
+  padding: 0 var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius);
 }
 
-/* Name on top; quantity, line total and remove on the row below. */
+/* Name and price on top; quantity, line total and remove below. */
 .cart-line {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   grid-template-areas:
     'info info info'
     'qty total remove';
   align-items: center;
-  gap: 8px 16px;
-  padding: 14px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-4) 0;
+}
+
+.cart-line + .cart-line {
+  border-top: 1px solid var(--divider);
 }
 
 .cart-line-info {
   grid-area: info;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.cart-line-name {
+  font-size: var(--text-lg);
+  font-weight: 700;
 }
 
 .quantity-controls {
   grid-area: qty;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .quantity-controls button {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
+  width: var(--tap-size);
+  height: var(--tap-size);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
   color: var(--text);
-  font-size: 1.2rem;
+  font: inherit;
+  font-size: var(--text-xl);
+  line-height: 1;
   cursor: pointer;
+}
+
+.quantity-value {
+  min-width: 2ch;
+  text-align: center;
+  font-weight: 700;
+  font-size: var(--text-lg);
 }
 
 .cart-line-total {
   grid-area: total;
-  font-weight: 600;
+  justify-self: end;
+  font-weight: 700;
+  font-size: var(--text-lg);
 }
 
 .cart-line .link-button {
@@ -264,47 +477,54 @@ a {
 .cart-total {
   display: flex;
   justify-content: space-between;
-  font-size: 1.2rem;
-  margin: 20px 0;
+  align-items: baseline;
+  margin: var(--space-5) 0;
+  padding: 0 var(--space-4);
+  font-size: var(--text-xl);
+}
+
+.cart-total strong {
+  font-family: var(--font-display);
+  color: var(--accent-text);
 }
 
 .checkout-form {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius);
 }
 
 .checkout-form label {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.field-hint {
+  margin: calc(-1 * var(--space-2)) 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
 
 .checkout-form input {
-  padding: 12px;
+  min-height: var(--tap-size);
+  padding: var(--space-3);
   font: inherit;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  font-size: var(--text-lg); /* 16px+ stops iPhones zooming in on focus */
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
 }
 
-/* ---------- Order confirmation ---------- */
+/* =========================================================
+   Order confirmation
+   ========================================================= */
 
 .order-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin: 0;
-}
-
-/* Loading / empty / error messages */
-.message {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 24px 0;
-}
-
-.message.error {
-  background: var(--error-bg);
-  color: var(--error-text);
-  border-radius: 10px;
-  padding: 16px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-display);
+  margin: 0 0 var(--space-3);
 }
