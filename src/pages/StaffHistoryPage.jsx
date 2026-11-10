@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatPrice } from '../lib/formatPrice'
 import { periodStart, summariseSales } from '../lib/salesSummary'
+import { isPaid, staffPaymentLabel } from '../lib/payments'
 
 const PERIODS = [
   { id: 'today', label: 'Today' },
@@ -33,7 +34,7 @@ function StaffHistoryPage() {
       let query = supabase
         .from('orders')
         .select(
-          'id, order_number, customer_name, status, total, created_at, order_items(quantity, unit_price, menu_items(name))'
+          'id, order_number, customer_name, status, total, created_at, payment_method, payment_status, order_items(quantity, unit_price, menu_items(name))'
         )
         .eq('status', 'completed')
         .order('created_at', { ascending: false }) // newest first
@@ -153,6 +154,13 @@ function StaffHistoryPage() {
                       <strong>{order.customer_name}</strong>{' '}
                       <span className="muted">
                         · {dateTimeFormatter.format(new Date(order.created_at))}
+                      </span>
+                    </p>
+                    <p className="history-payment">
+                      <span
+                        className={`payment-badge ${isPaid(order) ? 'payment-badge-paid' : ''}`}
+                      >
+                        {staffPaymentLabel(order)}
                       </span>
                     </p>
                     <p className="muted history-items">

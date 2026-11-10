@@ -1199,3 +1199,123 @@ a {
 .history-items {
   margin: var(--space-1) 0 0;
 }
+
+/* =========================================================
+   Payments
+   ========================================================= */
+
+/* Cart: payment choice. Each whole row is clickable and at least 44px tall. */
+.payment-options {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  border: none;
+}
+
+.payment-options legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.payment-option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: var(--tap-size);
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+/* Highlight the chosen option (border + weight, not colour alone) */
+.payment-option:has(input:checked) {
+  border-color: var(--accent);
+}
+
+.payment-option:has(input:checked) .payment-option-label {
+  color: var(--accent-text);
+}
+
+/* Focus ring on the whole row when the radio has keyboard focus */
+.payment-option:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.payment-option input {
+  width: 22px;
+  height: 22px;
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+.payment-option input:focus-visible {
+  outline: none; /* the row shows the focus ring instead */
+}
+
+.payment-option-label {
+  display: block;
+  font-weight: 700;
+}
+
+.payment-option-hint {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* Tracking page: payment status */
+.payment-panel {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+}
+
+.payment-panel .message {
+  margin: 0;
+}
+
+.payment-return {
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  color: var(--text);
+}
+
+.payment-status {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+}
+
+.payment-status-paid {
+  color: var(--detail);
+}
+
+/* Staff: small Paid / Unpaid badge */
+.payment-badge {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.payment-badge-paid {
+  border-color: var(--detail);
+  color: var(--detail);
+}
+
+.history-payment {
+  margin: var(--space-2) 0 0;
+}

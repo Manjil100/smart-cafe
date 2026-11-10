@@ -1,8 +1,14 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatPrice } from '../lib/formatPrice'
 import { formatWait } from '../lib/formatWait'
+import {
+  customerPaymentLabel,
+  isPaid,
+  startCardCheckout,
+  verifyCardPayment,
+} from '../lib/payments'
 
 // The four steps an order moves through, in order.
 const STEPS = [
@@ -25,6 +31,16 @@ function OrderTrackingPage() {
   const { orderId } = useParams()
   const [order, setOrder] = useState(null)
   const [pageState, setPageState] = useState('loading') // 'loading' | 'ready' | 'notfound' | 'error'
+
+  // Messages that arrive with the page, read once when it first opens:
+  // - ?payment=success or ?payment=cancelled when Stripe sends the customer back
+  // - an error from the cart page if card checkout couldn't start
+  const [searchParams] = useSearchParams()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [returnedFromStripe] = useState(() => searchParams.get('payment'))
+  const [paymentError, setPaymentError] = useState(() => location.state?.paymentError ?? '')
+  const [startingCheckout, setStartingCheckout] = useState(false)
 
   // Fetch the latest order details. Used by the first load, live updates,
   // the 20-second backup and when the tab regains focus.
@@ -99,6 +115,44 @@ function OrderTrackingPage() {
     }
   }, [currentStatus, pageState, loadOrder])
 
+  // Effect 3: tidy the URL. We've already saved the messages above, so
+  // replace "/order/<id>?payment=success" with "/order/<id>". This also
+  // drops the cart's error, so a refresh doesn't show it again.
+  useEffect(() => {
+    if (searchParams.has('payment') || location.state) {
+      navigate(location.pathname, { replace: true })
+    }
+  }, [searchParams, location, navigate])
+
+  // Effect 4: for an unpaid card order, ask the server to check with Stripe
+  // (in case the customer paid but we haven't heard yet), then reload.
+  // The ref makes sure this only happens once per visit.
+  const needsVerify =
+    order?.payment_method === 'card' && order?.payment_status !== 'paid'
+  const verifiedRef = useRef(false)
+  useEffect(() => {
+    if (!needsVerify || verifiedRef.current) return
+    verifiedRef.current = true
+
+    async function verifyThenReload() {
+      await verifyCardPayment(orderId)
+      await loadOrder()
+    }
+    verifyThenReload()
+  }, [needsVerify, orderId, loadOrder])
+
+  // "Pay now": start a new Stripe checkout for this order.
+  async function handlePayNow() {
+    setPaymentError('')
+    setStartingCheckout(true)
+    const { error } = await startCardCheckout(orderId)
+    // On success the browser has left for Stripe; we only get here on failure.
+    if (error) {
+      setPaymentError(error)
+      setStartingCheckout(false)
+    }
+  }
+
   if (pageState === 'loading') {
     return (
       <main className="page">
@@ -144,15 +198,33 @@ function OrderTrackingPage() {
   }
 
   // pageState is 'ready' from here on.
+  const paid = isPaid(order)
+  // Unpaid card orders are hidden from the kitchen until payment goes through.
+  const awaitingCard = order.payment_method === 'card' && !paid
+
   const currentIndex = STEPS.findIndex((step) => step.status === order.status)
-  const statusMessage =
+  let statusMessage =
     currentIndex >= 0 ? STEPS[currentIndex].message : `Status: ${order.status}`
+  if (awaitingCard && order.status === 'pending') {
+    statusMessage = "We'll start your order once your payment goes through."
+  }
 
   // Only show the estimate while the order is still being worked on,
-  // and only if the database sent a number.
+  // the kitchen can see it, and the database sent a number.
   const showEstimate =
     (order.status === 'pending' || order.status === 'preparing') &&
+    !awaitingCard &&
     typeof order.estimated_minutes === 'number'
+
+  // Message for customers coming back from Stripe.
+  let returnMessage = ''
+  if (returnedFromStripe === 'success') {
+    returnMessage = paid
+      ? 'Thanks, your payment went through.'
+      : "Thanks! We're confirming your payment…"
+  } else if (returnedFromStripe === 'cancelled' && !paid) {
+    returnMessage = "Payment was cancelled. Your order is saved. Use Pay now when you're ready."
+  }
 
   return (
     <main className="page">
@@ -176,6 +248,43 @@ function OrderTrackingPage() {
           Ready in <strong>{formatWait(order.estimated_minutes)}</strong>
         </p>
       )}
+
+      {/* Payment */}
+      <section className="payment-panel" aria-labelledby="payment-heading">
+        <h2 id="payment-heading" className="sr-only">
+          Payment
+        </h2>
+
+        {returnMessage && (
+          <p className="message payment-return" role="status">
+            {returnMessage}
+          </p>
+        )}
+
+        {paymentError && (
+          <p className="message error" role="alert">
+            Online payment couldn't start: {paymentError}
+            {paymentError.endsWith('.') ? '' : '.'} Please try Pay now again,
+            or ask our staff for help.
+          </p>
+        )}
+
+        <p className={`payment-status ${paid ? 'payment-status-paid' : ''}`}>
+          {paid && <span aria-hidden="true">✓ </span>}
+          {customerPaymentLabel(order)}
+        </p>
+
+        {awaitingCard && (
+          <button
+            type="button"
+            className="button button-large"
+            onClick={handlePayNow}
+            disabled={startingCheckout}
+          >
+            {startingCheckout ? 'Opening secure payment…' : 'Pay now'}
+          </button>
+        )}
+      </section>
 
       <ol className="progress" aria-label="Order progress">
         {STEPS.map((step, index) => {
