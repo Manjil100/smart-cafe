@@ -1070,3 +1070,132 @@ a {
 .order-estimate strong {
   color: var(--accent-text);
 }
+
+/* =========================================================
+   Staff: order history and sales
+   ========================================================= */
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Period filter buttons; the selected one is filled */
+.period-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-5) 0;
+}
+
+.period-button {
+  min-height: var(--tap-size);
+  padding: 0 var(--space-4);
+  border: 2px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.period-button[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+}
+
+/* Summary numbers: stacked on phones, three across on wider screens */
+.stats {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+@media (min-width: 700px) {
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.stat {
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+}
+
+.stat dt {
+  color: var(--text-muted);
+}
+
+.stat dd {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+.history-panel {
+  margin-top: var(--space-2);
+}
+
+.top-items {
+  margin: 0;
+  padding: var(--space-2) var(--space-5) var(--space-2) calc(var(--space-5) + 1.5em);
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.top-items li {
+  padding: var(--space-2) 0;
+}
+
+.top-items li + li {
+  border-top: 1px solid var(--divider);
+}
+
+.top-items li span:first-child {
+  font-weight: 700;
+}
+
+.top-items li span + span {
+  float: right;
+}
+
+.history-list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-order {
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+}
+
+.history-order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.history-total {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--accent-text);
+}
+
+.history-meta,
+.history-items {
+  margin: var(--space-1) 0 0;
+}

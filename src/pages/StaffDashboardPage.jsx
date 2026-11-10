@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { formatPrice } from '../lib/formatPrice'
 import { useAuth } from '../context/authContext'
@@ -113,9 +114,14 @@ function StaffDashboardPage() {
           <h1 className="page-title">Orders</h1>
           <p className="muted">Signed in as {staff.name}</p>
         </div>
-        <button type="button" className="button button-secondary" onClick={handleSignOut}>
-          Sign out
-        </button>
+        <div className="dashboard-actions">
+          <Link to="/staff/history" className="button button-secondary">
+            Order history
+          </Link>
+          <button type="button" className="button button-secondary" onClick={handleSignOut}>
+            Sign out
+          </button>
+        </div>
       </header>
 
       {/* Read out to screen reader users when the counts change */}

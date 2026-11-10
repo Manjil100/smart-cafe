@@ -6,6 +6,7 @@ import CartPage from './pages/CartPage.jsx'
 import OrderTrackingPage from './pages/OrderTrackingPage.jsx'
 import StaffLoginPage from './pages/StaffLoginPage.jsx'
 import StaffDashboardPage from './pages/StaffDashboardPage.jsx'
+import StaffHistoryPage from './pages/StaffHistoryPage.jsx'
 import RequireStaff from './components/RequireStaff.jsx'
 
 // App lists every page (route) in the app.
@@ -28,6 +29,14 @@ function App() {
         element={
           <RequireStaff>
             <StaffDashboardPage />
+          </RequireStaff>
+        }
+      />
+      <Route
+        path="/staff/history"
+        element={
+          <RequireStaff>
+            <StaffHistoryPage />
           </RequireStaff>
         }
       />
