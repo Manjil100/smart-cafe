@@ -61,7 +61,7 @@ function MenuPage() {
   return (
     <>
       <header className="site-header">
-        <h1 className="site-name">Tidewater Café</h1>
+        <h1 className="site-name">Mount Brew Café</h1>
         <p className="site-tagline">Order here, we'll bring it out when it's ready</p>
       </header>
 

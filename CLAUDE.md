@@ -1,6 +1,9 @@
 # Smart Café Ordering and Management System
 COMP.6207 Special Topic project (Toi Ohomai). Prototype only, fictional café data.
 
+## Brand
+Fictional café name: "Mount Brew Café". Colours, fonts, spacing live as CSS variables in src/index.css.
+
 ## Stack
 React (Vite), JavaScript, Supabase (Postgres, Auth, Realtime), react-router-dom, deployed on Vercel.
 
