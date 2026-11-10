@@ -1,45 +1,48 @@
 /* =========================================================
-   Mount Brew Café design system
-   Every page (menu, cart, tracking, staff) should use these
-   variables instead of hard-coded colours, fonts or sizes.
+   Mount Brew Café design system: dark coffee theme
+   Based on the colours and fonts of my earlier café website.
+   Every page (landing, menu, cart, tracking, staff) should use
+   these variables instead of hard-coded colours, fonts or sizes.
    ========================================================= */
 
 :root {
-  /* 1. Brand colours (raw values, from the brief) */
-  --brand-ink: #1b2e33; /* Harbour ink */
-  --brand-salt: #eef3f2; /* Sea-salt */
-  --brand-white: #ffffff;
-  --brand-red: #c4262e; /* Pōhutukawa red, the ONLY accent */
-  --brand-green: #4e6b3a; /* Flax green, small details */
+  /* 1. Brand colours (raw values) */
+  --brand-espresso: #0d0907; /* page background */
+  --brand-roast: #1a1410; /* raised surface */
+  --brand-crema: #f5ede3; /* main text */
+  --brand-oat: #9a8b7a; /* muted text */
+  --brand-copper: #c8956c; /* the one accent */
+  --brand-copper-light: #ddb896;
+  --brand-grounds: #2e241c; /* thin borders */
 
-  /* 2. Roles: what each colour is used for.
-     Components use these, so dark mode only has to change this block.
-     All text pairs checked for WCAG AA (4.5:1 normal text). */
-  --bg: var(--brand-salt); /* page background */
-  --surface: var(--brand-white); /* panels, inputs */
-  --text: var(--brand-ink); /* 12.6:1 on bg, 14.1:1 on surface */
-  --text-muted: #4f6266; /* 5.7:1 on bg, 6.4:1 on surface */
-  --accent: var(--brand-red); /* Add buttons, cart bar fill */
-  --on-accent: var(--brand-white); /* text on red, 5.7:1 */
-  --accent-text: var(--brand-red); /* totals in red, 5.1:1 on bg */
-  --detail: var(--brand-green); /* prep time, 5.4:1 on bg */
-  --divider: #d3dedc; /* thin decorative lines */
-  --border-strong: #6b7f83; /* input/button outlines, 4.2:1 (needs 3:1) */
-  --nav-bg: var(--brand-ink); /* sticky category bar */
-  --nav-text: var(--brand-salt); /* 12.6:1 on nav */
-  --focus: var(--brand-ink); /* keyboard focus outline */
-  --error-bg: #fcebec;
-  --error-text: #a31f26; /* 6.6:1 on error-bg */
+  /* 2. Roles: what each colour is used for. Components only use these.
+     All text pairs checked for WCAG AA (4.5:1 normal text, 3:1 UI parts). */
+  --bg: var(--brand-espresso);
+  --surface: var(--brand-roast); /* panels, cards, inputs */
+  --text: var(--brand-crema); /* 17.1:1 on bg, 15.7:1 on surface */
+  --text-muted: var(--brand-oat); /* 6.0:1 on bg, 5.5:1 on surface */
+  --accent: var(--brand-copper); /* buttons, cart bar fill */
+  --on-accent: var(--brand-espresso); /* dark text on copper, 7.5:1 */
+  --accent-text: var(--brand-copper); /* totals, highlights, 6.9:1 on surface */
+  --detail: var(--brand-copper-light); /* prep time etc., 9.9:1 on surface */
+  --divider: var(--brand-grounds); /* decorative lines only */
+  --border-strong: var(--brand-oat); /* input/button outlines, 5.5:1 (needs 3:1) */
+  --nav-bg: var(--brand-roast); /* sticky category bar */
+  --nav-text: var(--brand-crema); /* 15.7:1 on nav */
+  --focus: var(--brand-crema); /* focus outline, 17.1:1 on bg, stands out next to copper */
+  --error-bg: #2a1412;
+  --error-text: #f2a7a0; /* 9.0:1 on error-bg */
 
   /* 3. Typography */
-  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;
   --text-xl: 1.5rem;
   --text-2xl: 2rem;
-  --text-display: clamp(2.5rem, 9vw, 3.75rem); /* café name: grows with screen */
+  --text-display: clamp(2.5rem, 9vw, 3.75rem); /* page headings */
+  --text-hero: clamp(3rem, 12vw, 6rem); /* landing page café name */
 
   /* 4. Spacing scale (multiples of 4px) */
   --space-1: 4px;
@@ -49,42 +52,22 @@
   --space-5: 24px;
   --space-6: 32px;
   --space-7: 48px;
+  --space-8: 80px; /* between landing page sections */
 
   /* 5. Sizes */
   --tap-size: 44px; /* minimum tap target (WCAG 2.5.5 / Apple HIG) */
   --radius: 10px;
   --content-width: 720px; /* customer pages */
+  --wide-width: 1080px; /* landing page sections */
   --dashboard-width: 1200px; /* staff dashboard: room for 3 columns */
   --nav-height: 60px; /* used so headings aren't hidden under the sticky bar */
 
   font-family: var(--font-body);
   font-size: var(--text-base);
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--text);
   background: var(--bg);
-  color-scheme: light;
-}
-
-/* Dark mode: same roles, darker harbour-night colours. All pairs re-checked. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1e21;
-    --surface: var(--brand-ink);
-    --text: var(--brand-salt); /* 15.3:1 on bg */
-    --text-muted: #a9babc; /* 7.0:1 on surface */
-    --accent: var(--brand-red); /* white text on it is still 5.7:1 */
-    --on-accent: var(--brand-white);
-    --accent-text: #ff8f8f; /* lighter red for text, 6.5:1 on surface */
-    --detail: #a3c48a; /* lighter flax, 7.3:1 on surface */
-    --divider: #2c4248;
-    --border-strong: #7a8f93; /* 4.2:1 on surface */
-    --nav-bg: #0a1618;
-    --nav-text: var(--brand-salt);
-    --focus: var(--brand-salt);
-    --error-bg: #3a1a1d;
-    --error-text: #ffb3b3;
-    color-scheme: dark;
-  }
+  color-scheme: dark; /* dark only: form controls and scrollbars match */
 }
 
 /* =========================================================
@@ -100,9 +83,11 @@ body {
   background: var(--bg);
 }
 
+/* All headings use Playfair Display, like the earlier café site */
 h1,
 h2,
 h3 {
+  font-family: var(--font-display);
   line-height: 1.15;
 }
 
@@ -178,6 +163,17 @@ a {
   background: transparent;
   color: var(--text);
   border: 2px solid var(--text);
+}
+
+/* Hover: colour change only, no movement */
+.button:hover {
+  background: var(--brand-copper-light); /* dark text still 10:1 */
+}
+
+.button-secondary:hover {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent-text);
 }
 
 .button:disabled {
@@ -784,4 +780,252 @@ a {
 
 .order-card .message.error {
   margin: 0;
+}
+
+/* =========================================================
+   Site nav (all customer pages)
+   ========================================================= */
+
+.site-nav {
+  border-bottom: 1px solid var(--divider);
+  background: var(--bg);
+}
+
+.site-nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-size);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-brand span {
+  color: var(--accent-text);
+}
+
+.site-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-size);
+  padding: 0 var(--space-3);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.site-nav-link:hover,
+.site-nav-link[aria-current='page'] {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* =========================================================
+   Landing page
+   ========================================================= */
+
+.landing {
+  padding-bottom: 96px; /* room for the cart bar */
+}
+
+.hero {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4) var(--space-7);
+  text-align: center;
+}
+
+.hero-title {
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-5);
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent-text);
+}
+
+.hero-line {
+  max-width: 34ch;
+  margin: 0 auto var(--space-6);
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.button-large-inline {
+  min-height: 52px;
+  padding: 0 var(--space-6);
+  font-size: var(--text-lg);
+}
+
+.landing-section {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-4) 0;
+  /* stop below the top edge when jumped to from the hero button */
+  scroll-margin-top: var(--space-4);
+}
+
+.landing-heading {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  margin: 0 0 var(--space-4);
+}
+
+.landing-text {
+  max-width: 62ch; /* comfortable line length for reading */
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--text);
+}
+
+/* Today's picks: stacked on phones, three across on wider screens */
+.picks {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .picks {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pick-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+}
+
+.pick-card h3 {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.pick-card p {
+  margin: 0;
+}
+
+.pick-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto; /* push to the bottom so cards line up */
+  padding-top: var(--space-3);
+}
+
+.pick-price {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+/* Gallery: 2 columns on phones, 3 on wider screens, square crops */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 700px) {
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--surface); /* shown while the image loads */
+}
+
+/* Visit us */
+.visit {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+}
+
+@media (min-width: 700px) {
+  .visit {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.visit h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-lg);
+  color: var(--accent-text);
+}
+
+.visit address,
+.visit p {
+  margin: 0;
+  font-style: normal;
+  font-size: var(--text-lg);
+}
+
+.visit .small-text {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.site-footer {
+  max-width: var(--wide-width);
+  margin: var(--space-8) auto 0;
+  padding: var(--space-5) var(--space-4);
+  border-top: 1px solid var(--divider);
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
 }

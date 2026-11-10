@@ -66,7 +66,7 @@ function CartPage() {
         <h1 className="page-title">Your cart</h1>
         <p className="message">Your cart is empty.</p>
         <p className="center">
-          <Link to="/" className="button button-secondary">
+          <Link to="/menu" className="button button-secondary">
             Browse the menu
           </Link>
         </p>
@@ -76,7 +76,7 @@ function CartPage() {
 
   return (
     <main className="page">
-      <Link to="/" className="back-link">
+      <Link to="/menu" className="back-link">
         <span aria-hidden="true">←</span>&nbsp;Back to menu
       </Link>
       <h1 className="page-title">Your cart</h1>

@@ -114,7 +114,7 @@ function OrderTrackingPage() {
           We couldn't find an order for this link. Please check the link is
           complete, or ask our staff for help.
         </p>
-        <Link to="/" className="button button-secondary">
+        <Link to="/menu" className="button button-secondary">
           Back to menu
         </Link>
       </main>
@@ -211,7 +211,7 @@ function OrderTrackingPage() {
       )}
 
       <p className="center">
-        <Link to="/" className="button button-secondary">
+        <Link to="/menu" className="button button-secondary">
           Back to menu
         </Link>
       </p>
