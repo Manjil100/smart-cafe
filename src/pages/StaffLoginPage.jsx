@@ -57,7 +57,7 @@ function StaffLoginPage() {
 
   return (
     <main className="page narrow-page">
-      <p className="muted">Mount Brew Café</p>
+      <p className="muted">Hey Jude Cafe</p>
       <h1 className="page-title">Staff sign in</h1>
 
       <form className="checkout-form" onSubmit={handleSubmit}>

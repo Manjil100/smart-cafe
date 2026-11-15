@@ -1,21 +1,33 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
-// Top bar on every customer page: café name (links home) and a menu link.
+// The café's main website. The brand and "Café website" links go back there.
+const CAFE_SITE = 'https://cafe-n2mj.vercel.app'
+
+// Top bar on every customer page: prototype note, café name and links.
 // NavLink adds aria-current="page" when you're on that page.
 function SiteNav() {
   return (
-    <header className="site-nav">
-      <div className="site-nav-inner">
-        <Link to="/" className="site-brand">
-          Mount <span>Brew</span> Café
-        </Link>
-        <nav aria-label="Main">
-          <NavLink to="/menu" className="site-nav-link">
-            Menu
-          </NavLink>
-        </nav>
-      </div>
-    </header>
+    <>
+      <p className="proto-note">
+        Student prototype for Hey Jude Cafe. Orders placed here don’t reach the
+        café yet.
+      </p>
+      <header className="site-nav">
+        <div className="site-nav-inner">
+          <a href={CAFE_SITE} className="site-brand">
+            Hey Jude
+          </a>
+          <nav aria-label="Main">
+            <NavLink to="/menu" className="site-nav-link">
+              Order online
+            </NavLink>
+            <a href={CAFE_SITE} className="site-nav-link">
+              Café website
+            </a>
+          </nav>
+        </div>
+      </header>
+    </>
   )
 }
 

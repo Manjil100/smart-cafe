@@ -1,6 +1,5 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import CustomerLayout from './components/CustomerLayout.jsx'
-import LandingPage from './pages/LandingPage.jsx'
 import MenuPage from './pages/MenuPage.jsx'
 import CartPage from './pages/CartPage.jsx'
 import OrderTrackingPage from './pages/OrderTrackingPage.jsx'
@@ -15,7 +14,8 @@ function App() {
     <Routes>
       {/* Customer pages share the top nav from CustomerLayout */}
       <Route element={<CustomerLayout />}>
-        <Route path="/" element={<LandingPage />} />
+        {/* The café's own website is the home page, so this app opens on the menu */}
+        <Route path="/" element={<Navigate to="/menu" replace />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/cart" element={<CartPage />} />
         {/* :orderId is a URL parameter, e.g. /order/3f2a... */}

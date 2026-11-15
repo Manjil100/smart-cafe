@@ -23,7 +23,7 @@ function MenuPage() {
         supabase.from('categories').select('id, name').order('sort_order'),
         supabase
           .from('menu_items')
-          .select('id, category_id, name, description, price, prep_time_minutes')
+          .select('id, category_id, name, description, price, prep_time_minutes, image_url')
           .eq('is_available', true)
           .order('name'),
       ])
@@ -62,8 +62,8 @@ function MenuPage() {
   return (
     <>
       <header className="site-header">
-        <h1 className="site-name">Our menu</h1>
-        <p className="site-tagline">Order here, we'll bring it out when it's ready</p>
+        <h1 className="site-name">Order online</h1>
+        <p className="site-tagline">Choose your food and drinks, then pick them up from the counter when they're ready.</p>
         <KitchenWait />
       </header>
 
@@ -112,7 +112,18 @@ function MenuPage() {
 
                   return (
                     <li key={item.id} className="menu-item">
-                      <div>
+                      {/* Dish photo, only for dishes that have one */}
+                      {item.image_url && (
+                        <img
+                          className="menu-item-photo"
+                          src={item.image_url.replace(/\.webp$/, '-sm.webp')}
+                          alt=""
+                          width="72"
+                          height="72"
+                          loading="lazy"
+                        />
+                      )}
+                      <div className="menu-item-text">
                         <h3>{item.name}</h3>
                         {item.description && (
                           <p className="menu-item-description">{item.description}</p>
